@@ -8,9 +8,19 @@ post1 = {
     "content" : "Today i met a girl"
 }
 
+post2 = {
+    "title" : "Bad day",
+    "content" : "Today i met a gay"
+}
+
+posts = [post1, post2]
+
+print(post1["title"])
+
 @app.route('/')
 def hello_world():
-    return json.dumps(post1)
+
+    return json.dumps(posts)
 
 
 if __name__ == '__main__':
