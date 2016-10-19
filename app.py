@@ -1,5 +1,5 @@
 import json
-from flask import Flask
+from flask import Flask, request
 
 app = Flask(__name__)
 
@@ -21,6 +21,18 @@ print(post1["title"])
 def hello_world():
 
     return json.dumps(posts)
+
+@app.route('/addpost', methods=["POST"])
+def add_post():
+    args = request.form
+    title = args["title"]
+    content = args["content"]
+    new_post = {"title": title,
+                "content": content
+                }
+    posts.append(new_post)
+    print(title, content)
+    return "OK"
 
 
 if __name__ == '__main__':
