@@ -1,8 +1,9 @@
 from mongoengine import connect
 
-db_name = "c4e-portfolio"
-host = "ds059516.mlab.com"
-port = 59516
+
+db_name = "a5-tumblelog"
+host = "ds047911.mlab.com"
+port = 47911
 username = "admin"
 password = "admin"
 

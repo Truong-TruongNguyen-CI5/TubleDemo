@@ -1,39 +1,29 @@
-import json
-from flask import Flask, request
+from flask import *
+from mlab import *
+from mongoengine import *
 
 app = Flask(__name__)
+mlab_connect()
 
-post1 = {
-    "title" : "Good day",
-    "content" : "Today i met a girl"
-}
+class Post(Document):
+    title = StringField()
+    content = StringField()
+    def to_json(self):
+        return {"title":self.title,"content":self.content}
 
-post2 = {
-    "title" : "Bad day",
-    "content" : "Today i met a gay"
-}
 
-posts = [post1, post2]
-
-print(post1["title"])
-
-@app.route('/')
+@app.route('/',methods=["GET","POST"])
 def hello_world():
+    if request.method == "GET":
+        return jsonify([post.to_json() for post in Post.objects])
+    elif request.method == "POST":
+        form = request.get_json()
+        title_value = form["title"]
+        content_value = form["content"]
+        p = Post(title = title_value,content = content_value)
+        p.save()
 
-    return json.dumps(posts)
-
-@app.route('/addpost', methods=["POST"])
-def add_post():
-    args = request.form
-    title = args["title"]
-    content = args["content"]
-    new_post = {"title": title,
-                "content": content
-                }
-    posts.append(new_post)
-    print(title, content)
-    return "OK"
-
+        return jsonify({"code":1,"message":"Ok"})
 
 if __name__ == '__main__':
     app.run()
